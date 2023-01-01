@@ -2,6 +2,8 @@
 # see more about dockerfile templates here: https://www.balena.io/docs/learn/develop/dockerfile/
 FROM balenalib/%%BALENA_MACHINE_NAME%%-python:3-buster
 
+# expose custom port for jupyterlab and set UDEV to 1
+EXPOSE 8081
 ENV UDEV=1
 
 # Copy requirements.txt first for better cache on later pushes
@@ -19,8 +21,8 @@ RUN  pip install import_ipynb
 RUN  pip3 install --no-cache-dir jupyterlab
 RUN  pip install -r requirements.txt
 
-# expose custom port for jupyterlab
-EXPOSE 8081
+# Defines our working directory in container
+WORKDIR /usr/src/app
 
 # This will copy all files in our root to the working  directory in the container
 COPY . ./
